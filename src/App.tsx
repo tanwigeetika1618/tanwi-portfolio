@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import ParticleField from './components/ParticleField';
 import ScrollMascot from './components/ScrollMascot';
 import ShootingStars from './components/ShootingStars';
+import SpaceBackgroundEffects from './components/SpaceBackgroundEffects';
 import { eras } from './eras/eraData';
 import { useScrollProgress } from './hooks/useScrollProgress';
 
@@ -20,6 +21,7 @@ export default function App() {
         <LoadingScreen />
       </Suspense>
 
+      <SpaceBackgroundEffects />
       <ParticleField />
       <ShootingStars />
       <ScrollMascot activeEra={activeEra} />
