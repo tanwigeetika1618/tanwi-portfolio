@@ -1,30 +1,99 @@
 import { motion } from 'framer-motion';
 
+let shipIdCounter = 0;
+
 function Spaceship({ className, style, flip }: { className?: string; style?: React.CSSProperties; flip?: boolean }) {
+  const id = `ship-${shipIdCounter++}`;
   return (
-    <svg viewBox="0 0 200 100" className={className} style={{ ...style, transform: flip ? 'scaleX(-1)' : undefined }} xmlns="http://www.w3.org/2000/svg">
-      {/* Main body */}
-      <ellipse cx="100" cy="50" rx="60" ry="18" fill="#8892a8" />
-      <ellipse cx="100" cy="50" rx="60" ry="18" fill="url(#shipGrad)" />
-      {/* Dome */}
-      <ellipse cx="100" cy="42" rx="22" ry="18" fill="#3b82f6" opacity="0.5" />
-      <ellipse cx="100" cy="42" rx="22" ry="18" fill="none" stroke="#60a5fa" strokeWidth="1" opacity="0.6" />
-      <ellipse cx="96" cy="38" rx="6" ry="4" fill="#fff" opacity="0.3" />
-      {/* Bottom lights */}
-      <ellipse cx="70" cy="58" rx="5" ry="2" fill="#fbbf24" opacity="0.8" />
-      <ellipse cx="100" cy="60" rx="5" ry="2" fill="#fbbf24" opacity="0.8" />
-      <ellipse cx="130" cy="58" rx="5" ry="2" fill="#fbbf24" opacity="0.8" />
-      {/* Engine glow */}
-      <ellipse cx="100" cy="62" rx="30" ry="6" fill="#3b82f6" opacity="0.15" />
-      {/* Beam */}
-      <path d="M75 62 L60 90 L140 90 L125 62" fill="#3b82f6" opacity="0.06" />
-      <defs>
-        <linearGradient id="shipGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#c0c8d8" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#5a6478" stopOpacity="0.4" />
-        </linearGradient>
-      </defs>
-    </svg>
+    <div className={className} style={{ ...style, transform: flip ? 'scaleX(-1)' : undefined, position: 'relative' }}>
+      <svg viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
+        {/* Outer hull glow */}
+        <ellipse cx="100" cy="50" rx="64" ry="22" fill="none" stroke="url(#glimmer-${id})" strokeWidth="1.5" opacity="0.4">
+          <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite" />
+        </ellipse>
+        {/* Main body - metallic shimmer */}
+        <ellipse cx="100" cy="50" rx="60" ry="18" fill={`url(#bodyGrad-${id})`} />
+        {/* Body shine streak */}
+        <ellipse cx="90" cy="44" rx="40" ry="4" fill="#fff" opacity="0.08">
+          <animate attributeName="opacity" values="0.04;0.12;0.04" dur="3s" repeatCount="indefinite" />
+        </ellipse>
+        {/* Dome - glowing */}
+        <ellipse cx="100" cy="42" rx="22" ry="18" fill={`url(#domeGrad-${id})`} opacity="0.6">
+          <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2.5s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="100" cy="42" rx="22" ry="18" fill="none" stroke="#93c5fd" strokeWidth="0.8" opacity="0.5">
+          <animate attributeName="stroke-opacity" values="0.3;0.8;0.3" dur="1.8s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="96" cy="36" rx="7" ry="5" fill="#fff" opacity="0.15" />
+        {/* Pulsing bottom lights */}
+        <ellipse cx="65" cy="58" rx="5" ry="2.5" fill="#fbbf24" opacity="0.9">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="85" cy="60" rx="4" ry="2" fill="#34d399" opacity="0.8">
+          <animate attributeName="opacity" values="0.3;0.9;0.3" dur="1.3s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="100" cy="61" rx="5" ry="2.5" fill="#fbbf24" opacity="0.9">
+          <animate attributeName="opacity" values="0.5;1;0.5" dur="0.8s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="115" cy="60" rx="4" ry="2" fill="#f472b6" opacity="0.8">
+          <animate attributeName="opacity" values="0.3;0.9;0.3" dur="1.1s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="135" cy="58" rx="5" ry="2.5" fill="#fbbf24" opacity="0.9">
+          <animate attributeName="opacity" values="0.6;1;0.6" dur="1.2s" repeatCount="indefinite" />
+        </ellipse>
+        {/* Engine glow - pulsing */}
+        <ellipse cx="100" cy="64" rx="32" ry="8" fill="#3b82f6" opacity="0.12">
+          <animate attributeName="opacity" values="0.08;0.2;0.08" dur="1.5s" repeatCount="indefinite" />
+          <animate attributeName="ry" values="6;10;6" dur="1.5s" repeatCount="indefinite" />
+        </ellipse>
+        {/* Tractor beam - shimmering */}
+        <path d="M78 62 L55 105 L145 105 L122 62" fill={`url(#beamGrad-${id})`} opacity="0.04">
+          <animate attributeName="opacity" values="0.02;0.06;0.02" dur="2s" repeatCount="indefinite" />
+        </path>
+        {/* Sparkle points around ship */}
+        <circle cx="42" cy="48" r="1" fill="#fff" opacity="0.6">
+          <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="r" values="0.5;1.5;0.5" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="158" cy="46" r="1" fill="#fff" opacity="0.4">
+          <animate attributeName="opacity" values="0;0.7;0" dur="2.5s" repeatCount="indefinite" begin="0.5s" />
+          <animate attributeName="r" values="0.5;1.5;0.5" dur="2.5s" repeatCount="indefinite" begin="0.5s" />
+        </circle>
+        <circle cx="100" cy="30" r="0.8" fill="#93c5fd" opacity="0.5">
+          <animate attributeName="opacity" values="0;0.9;0" dur="1.8s" repeatCount="indefinite" begin="1s" />
+        </circle>
+        <circle cx="75" cy="38" r="0.6" fill="#c4b5fd" opacity="0.4">
+          <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite" begin="0.3s" />
+        </circle>
+        <circle cx="130" cy="40" r="0.7" fill="#fbbf24" opacity="0.3">
+          <animate attributeName="opacity" values="0;0.5;0" dur="2.2s" repeatCount="indefinite" begin="1.5s" />
+        </circle>
+        <defs>
+          <linearGradient id={`bodyGrad-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#b0bcd0" stopOpacity="0.7" />
+            <stop offset="30%" stopColor="#8892a8" stopOpacity="0.5" />
+            <stop offset="60%" stopColor="#a0aec0" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#6b7a90" stopOpacity="0.5" />
+          </linearGradient>
+          <radialGradient id={`domeGrad-${id}`} cx="45%" cy="40%">
+            <stop offset="0%" stopColor="#93c5fd" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#1e40af" stopOpacity="0.3" />
+          </radialGradient>
+          <linearGradient id={`glimmer-${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#93c5fd" stopOpacity="0" />
+            <stop offset="30%" stopColor="#c4b5fd" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#fff" stopOpacity="0.8" />
+            <stop offset="70%" stopColor="#c4b5fd" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#93c5fd" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id={`beamGrad-${id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#93c5fd" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
   );
 }
 
@@ -99,41 +168,59 @@ export default function SpaceBackgroundEffects() {
         }}
       />
 
-      {/* ===== SPACESHIPS ROAMING ===== */}
+      {/* ===== GLIMMERING SPACESHIPS ROAMING ===== */}
       <motion.div
         className="absolute"
-        style={{ top: '15%', left: '-5%' }}
-        animate={{ x: [0, window.innerWidth * 1.1, 0] }}
-        transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
+        style={{ top: '12%', left: '-8%' }}
+        animate={{ x: [0, window.innerWidth * 1.15, 0], y: [0, 20, -10, 0] }}
+        transition={{ repeat: Infinity, duration: 22, ease: 'linear' }}
       >
-        <Spaceship className="w-[120px] md:w-[160px] opacity-[0.08]" />
+        <Spaceship className="w-[140px] md:w-[180px] opacity-[0.14]" />
       </motion.div>
 
       <motion.div
         className="absolute"
-        style={{ top: '45%', right: '-5%' }}
-        animate={{ x: [0, -window.innerWidth * 1.1, 0] }}
-        transition={{ repeat: Infinity, duration: 30, ease: 'linear', delay: 5 }}
+        style={{ top: '38%', right: '-5%' }}
+        animate={{ x: [0, -window.innerWidth * 1.1, 0], y: [0, -15, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 28, ease: 'linear', delay: 4 }}
       >
-        <Spaceship className="w-[100px] md:w-[130px] opacity-[0.06]" flip />
+        <Spaceship className="w-[110px] md:w-[150px] opacity-[0.12]" flip />
       </motion.div>
 
       <motion.div
         className="absolute"
-        style={{ top: '75%', left: '-8%' }}
-        animate={{ x: [0, window.innerWidth * 1.1, 0] }}
-        transition={{ repeat: Infinity, duration: 22, ease: 'linear', delay: 10 }}
+        style={{ top: '62%', left: '-6%' }}
+        animate={{ x: [0, window.innerWidth * 1.1, 0], y: [0, 30, 0] }}
+        transition={{ repeat: Infinity, duration: 20, ease: 'linear', delay: 8 }}
       >
-        <Spaceship className="w-[90px] md:w-[110px] opacity-[0.07]" />
+        <Spaceship className="w-[100px] md:w-[130px] opacity-[0.11]" />
       </motion.div>
 
       <motion.div
         className="absolute"
-        style={{ top: '30%', right: '-3%' }}
-        animate={{ x: [0, -window.innerWidth * 0.8, 0], y: [0, 50, 0] }}
-        transition={{ repeat: Infinity, duration: 35, ease: 'linear', delay: 15 }}
+        style={{ top: '85%', right: '-4%' }}
+        animate={{ x: [0, -window.innerWidth * 1.05, 0], y: [0, -20, 0] }}
+        transition={{ repeat: Infinity, duration: 32, ease: 'linear', delay: 12 }}
       >
-        <Spaceship className="w-[80px] md:w-[100px] opacity-[0.05]" flip />
+        <Spaceship className="w-[90px] md:w-[120px] opacity-[0.10]" flip />
+      </motion.div>
+
+      <motion.div
+        className="absolute"
+        style={{ top: '25%', left: '-10%' }}
+        animate={{ x: [0, window.innerWidth * 1.2, 0], y: [0, -25, 15, 0] }}
+        transition={{ repeat: Infinity, duration: 35, ease: 'linear', delay: 16 }}
+      >
+        <Spaceship className="w-[70px] md:w-[95px] opacity-[0.08]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute"
+        style={{ top: '52%', right: '-6%' }}
+        animate={{ x: [0, -window.innerWidth * 0.9, 0], y: [0, 35, 0] }}
+        transition={{ repeat: Infinity, duration: 26, ease: 'linear', delay: 20 }}
+      >
+        <Spaceship className="w-[80px] md:w-[105px] opacity-[0.09]" flip />
       </motion.div>
 
       {/* ===== ALIENS ===== */}
