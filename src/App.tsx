@@ -4,6 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import EraSection from './components/EraSection/EraSection';
 import Footer from './components/Footer';
 import ParticleField from './components/ParticleField';
+import ScrollMascot from './components/ScrollMascot';
 import { eras } from './eras/eraData';
 import { useScrollProgress } from './hooks/useScrollProgress';
 
@@ -18,23 +19,25 @@ export default function App() {
         <LoadingScreen />
       </Suspense>
 
-      {/* Interactive particle background */}
       <ParticleField />
-
+      <ScrollMascot activeEra={activeEra} />
       <Navbar activeEra={activeEra} scrollToEra={scrollToEra} progress={progress} />
 
       <main className="relative z-[2]">
         <HeroSection />
 
         {/* Journey divider */}
-        <div className="relative py-20 flex items-center justify-center">
+        <div className="relative py-16 flex items-center justify-center">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent" />
           </div>
-          <div className="relative bg-[#050510] px-8">
-            <h2 className="text-lg md:text-xl font-medium text-gray-500 font-['Space_Grotesk'] text-center tracking-wide">
+          <div className="relative bg-[#050510] px-8 text-center">
+            <h2 className="text-lg md:text-xl font-medium text-gray-500 font-['Space_Grotesk'] tracking-wide">
               🪐 Planets of My Journey
             </h2>
+            <p className="text-[10px] text-gray-700 mt-1 font-mono tracking-[0.2em] uppercase">
+              {eras.length} worlds to explore
+            </p>
           </div>
         </div>
 
